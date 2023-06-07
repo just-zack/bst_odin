@@ -41,13 +41,18 @@ class Tree {
     this.root = node;
     return node;
   }
+
+  buildTree(arr) {
+    let sortedArray = this.bubbleSortArray(arr);
+    console.log(sortedArray);
+    this.sortedArraytoBST(sortedArray, 0, sortedArray.length - 1);
+    return this.root;
+  }
 }
 
 let arr = [1, 2, 3, 4, 5, 6, 7];
 let arrB = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const BST = new Tree();
 console.log(arrB);
-const sortedArray = BST.bubbleSortArray(arrB);
-console.log(sortedArray);
-BST.sortedArraytoBST(sortedArray, 0, sortedArray.length - 1);
+BST.buildTree(arrB);
 console.log(BST);
