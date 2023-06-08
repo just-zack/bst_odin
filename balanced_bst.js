@@ -110,6 +110,26 @@ class Tree {
       }
     }
   }
+
+  levelOrderTraversal(bst) {
+    let queue = [];
+    let lotArray = [];
+    if (bst.root !== null) {
+      queue.unshift(bst.root);
+    } else return;
+
+    while (queue.length != 0) {
+      let node = queue.pop();
+      lotArray.push(node.data);
+      if (node.leftChild) {
+        queue.unshift(node.leftChild);
+      }
+      if (node.rightChild) {
+        queue.unshift(node.rightChild);
+      }
+    }
+    console.log(lotArray);
+  }
 }
 
 let arr = [1, 2, 3, 4, 5, 6, 7];
@@ -118,21 +138,5 @@ const BST = new Tree();
 console.log(arrB);
 let root = BST.buildTree(arrB);
 console.log(BST);
-BST.insertNode(6);
 console.log(BST);
-console.log(BST.find(BST.root, 67));
-console.log(BST.find(BST.root, 8));
-console.log(BST.find(BST.root, 324));
-
-function prettyPrint(node, prefix = "", isLeft = true) {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-  }
-}
+console.log(BST.levelOrderTraversal(BST));
