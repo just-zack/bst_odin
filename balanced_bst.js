@@ -46,34 +46,33 @@ class Tree {
 
   buildTree(arr) {
     let sortedArray = this.bubbleSortArray(arr);
-    console.log(sortedArray);
     this.sortedArraytoBST(sortedArray, 0, sortedArray.length - 1);
     return this.root;
   }
   /*
-  removeNode(value) {
-    let node = this.root;
-    this.findNodeLocationToRemove(node, value);
-  }
-    
-    findNodeLocationToRemove(node, value) {
-           if (node == value) {
-      node = new Node(value);
-      this.size++;
-      return node;
-    }
-    if (node.data == value) {
-      return;
-    } else {
-      if (value < node.data) {
-        node.left = this.findNodeLocation(node.leftChild, value);
-      } else if (value > node.data) {
-        node.right = this.findNodeLocation(node.rightChild, value);
+      removeNode(value) {
+        let node = this.root;
+        this.findNodeLocationToRemove(node, value);
       }
-    }
-  } 
-    }
-    */
+        
+        findNodeLocationToRemove(node, value) {
+               if (node == value) {
+          node = new Node(value);
+          this.size++;
+          return node;
+        }
+        if (node.data == value) {
+          return;
+        } else {
+          if (value < node.data) {
+            node.left = this.findNodeLocation(node.leftChild, value);
+          } else if (value > node.data) {
+            node.right = this.findNodeLocation(node.rightChild, value);
+          }
+        }
+      } 
+        }
+        */
 
   find(node, value) {
     if (node.data === value) {
@@ -111,6 +110,36 @@ class Tree {
     }
   }
 
+  bstDeleteNode(node, value) {
+    if (node === null) {
+      return node;
+    }
+    if (value === node.data) {
+      if (node.leftChild === null && node.rightChild === null) {
+        node = null;
+      } else if (node.leftChild === null) {
+        node = node.rightChild;
+      } else if (node.rightChild === null) {
+        node = node.leftChild;
+      } else {
+        let tempNode = this.findSmallestNode(node.rightChild);
+        node.data = tempNode.data;
+        node.right = this.bstDeleteNode(node.rightChild, tempNode.value);
+      }
+    } else if (value < node.data) {
+      return this.bstDeleteNode(node.leftChild, value);
+    } else {
+      return this.bstDeleteNode(node.rightChild, value);
+    }
+  }
+
+  findSmallestNode(node) {
+    while (node.leftChild) {
+      node = node.leftChild;
+    }
+    return node;
+  }
+
   levelOrderTraversal(bst) {
     let queue = [];
     let lotArray = [];
@@ -134,9 +163,13 @@ class Tree {
 
 let arr = [1, 2, 3, 4, 5, 6, 7];
 let arrB = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arrC = [1];
 const BST = new Tree();
 console.log(arrB);
 let root = BST.buildTree(arrB);
 console.log(BST);
 console.log(BST);
+console.log(BST.levelOrderTraversal(BST));
+console.log(BST.find(BST.root, 9));
+BST.bstDeleteNode(BST.root, 4);
 console.log(BST.levelOrderTraversal(BST));
