@@ -69,20 +69,31 @@ class Tree {
       }
     }
   }
-
-  insertNode(node, value) {
-    if (node == null) {
-      node = new Node(value);
+  //works
+  insert(value) {
+    var newNode = new Node(value);
+    if (this.root === null) {
+      this.root = newNode;
       this.size++;
-      return node;
+      return this.root;
     }
-    if (node.data == value) {
-      return;
-    } else {
-      if (value < node.data) {
-        return this.insertNode(node.leftChild, value);
-      } else if (value > node.data) {
-        return this.insertNode(node.rightChild, value);
+    let current = this.root;
+    while (current) {
+      if (value === current.data) return;
+      if (value < current.data) {
+        if (current.leftChild === null) {
+          current.leftChild = newNode;
+          this.size++;
+          return current.leftChild;
+        }
+        current = current.leftChild;
+      } else {
+        if (current.rightChild === null) {
+          current.rightChild = newNode;
+          this.size++;
+          return current.rightChild;
+        }
+        current = current.rightChild;
       }
     }
   }
@@ -119,13 +130,14 @@ class Tree {
     }
     return node;
   }
-
-  getLevelOrderArray(node) {
+  //works
+  getLevelOrderArray() {
     this.nodeArray = [];
+    let node = this;
     this.levelOrderTraversal(node);
     return this.nodeArray;
   }
-
+  //works
   levelOrderTraversal(bst) {
     let queue = [];
     let lotArray = [];
@@ -148,7 +160,7 @@ class Tree {
     }
     return;
   }
-
+  //works
   inorderTraversal(node) {
     if (node !== null) {
       this.inorderTraversal(node.leftChild);
@@ -160,7 +172,8 @@ class Tree {
 
   getInorderArray(node) {
     this.nodeArray = [];
-    this.inorderTraversal(node.root);
+    node = this.root;
+    this.inorderTraversal(node);
     return this.nodeArray;
   }
 }
@@ -171,14 +184,16 @@ const BST = new Tree();
 //console.log(arrB);
 BST.buildTree(arrB);
 console.log(BST);
-console.log("hello");
-console.log(BST.getInorderArray(BST));
-console.log(BST.getLevelOrderArray(BST));
+console.log(BST.getInorderArray());
+console.log(BST.getLevelOrderArray());
+console.log(BST.insert(7000));
+console.log(BST.insert(6));
+console.log(BST.insert(10));
+console.log(BST.getInorderArray());
+console.log(BST.getLevelOrderArray());
 //console.log(BST.find(BST.root, 9));
 //BST.bstDeleteNode(BST.root, 67);
-//console.log(BST.levelOrderTraversal(BST));
 //console.log(BST.insertNode(BST.root, 75));
-//console.log(BST.levelOrderTraversal(BST));
 console.log(BST);
 
 // fix delete node bugs
