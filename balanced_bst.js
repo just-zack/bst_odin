@@ -10,6 +10,7 @@ class Tree {
   constructor(data) {
     this.root = null;
     this.size = 0;
+    this.nodeArray = [];
   }
 
   //works
@@ -47,14 +48,14 @@ class Tree {
     return node;
   }
 
-  //work
+  //works
   buildTree(arr) {
     let sortedArray = this.bubbleSortArray(arr);
     this.sortedArraytoBST(sortedArray, 0, sortedArray.length - 1);
     return this.root;
   }
 
-  // works fine (don't change)
+  // works
   find(node, value) {
     if (node.data === value) {
       return node;
@@ -119,16 +120,25 @@ class Tree {
     return node;
   }
 
+  getLevelOrderArray(node) {
+    this.nodeArray = [];
+    this.levelOrderTraversal(node);
+    return this.nodeArray;
+  }
+
   levelOrderTraversal(bst) {
     let queue = [];
     let lotArray = [];
     if (bst.root !== null) {
       queue.unshift(bst.root);
-    } else return lotArray;
+    } else {
+      this.nodeArray = [];
+      return;
+    }
 
     while (queue.length != 0) {
       let node = queue.pop();
-      lotArray.push(node.data);
+      this.nodeArray.push(node.data);
       if (node.leftChild) {
         queue.unshift(node.leftChild);
       }
@@ -136,29 +146,22 @@ class Tree {
         queue.unshift(node.rightChild);
       }
     }
-    return lotArray;
-  }
-
-  displayInorderArray(node) {
-    let nodeArray = [];
-    if (node) {
-      this.inorderTraversal(node.leftChild);
-      nodeArray.push(this.inorderTraversal(node));
-      this.inorderTraversal(node.rightChild);
-    }
-    return nodeArray;
+    return;
   }
 
   inorderTraversal(node) {
-    let nodeArray = [];
     if (node !== null) {
       this.inorderTraversal(node.leftChild);
-      nodeArray.push(node.data);
+      this.nodeArray.push(node.data);
       this.inorderTraversal(node.rightChild);
-    } else {
-      return;
-    }
-    return nodeArray;
+      return node;
+    } else return;
+  }
+
+  getInorderArray(node) {
+    this.nodeArray = [];
+    this.inorderTraversal(node.root);
+    return this.nodeArray;
   }
 }
 let arr = [1, 2, 3, 4, 5, 6, 7];
@@ -169,8 +172,8 @@ const BST = new Tree();
 BST.buildTree(arrB);
 console.log(BST);
 console.log("hello");
-console.log(BST.inorderTraversal(BST.root));
-console.log(BST.levelOrderTraversal(BST));
+console.log(BST.getInorderArray(BST));
+console.log(BST.getLevelOrderArray(BST));
 //console.log(BST.find(BST.root, 9));
 //BST.bstDeleteNode(BST.root, 67);
 //console.log(BST.levelOrderTraversal(BST));
