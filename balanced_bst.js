@@ -98,7 +98,8 @@ class Tree {
     }
   }
 
-  bstDeleteNode(node, value) {
+  bstDeleteNode(value) {
+    let node = this.root;
     if (node === null) {
       return node;
     }
@@ -114,7 +115,7 @@ class Tree {
       } else {
         let tempNode = this.findSmallestNode(node.rightChild);
         node.data = tempNode.data;
-        node.rightChild = this.bstDeleteNode(node.rightChild, tempNode.data);
+        node.rightChild = this.bstDeleteNode(node.rightChild, value);
         return node;
       }
     } else if (value < node.data) {
@@ -176,24 +177,75 @@ class Tree {
     this.inorderTraversal(node);
     return this.nodeArray;
   }
+
+  remove(value) {
+    this.removeNode(this.root, value);
+  }
+
+  removeNode(current, value) {
+    // base case, if the tree is empty
+    if (current === null) return current;
+
+    // when value is the same as current's value, this is the node to be deleted
+
+    if (value === current.data) {
+      // for case 1 and 2, node without child or with one child
+
+      if (current.leftChild === null && current.rightChild === null) {
+        return null;
+      } else if (current.leftChild === null) {
+        return current.rightChild;
+      } else if (current.rightChild === null) {
+        return current.leftChild;
+      } else {
+        /// node with two children, get the inorder successor,
+        //smallest in the right subtree
+
+        let tempNode = this.kthSmallestNode(current.rightChild);
+        current.data = tempNode.data;
+
+        /// delete the inorder successor
+
+        current.rightChild = this.removeNode(current.rightChild, tempNode.data);
+        return current;
+      }
+
+      // recur down the tree
+    } else if (value < current.data) {
+      current.leftChild = this.removeNode(current.leftChild, value);
+      return current;
+    } else {
+      current.rightChild = this.removeNode(current.rightChild, value);
+      return current;
+    }
+  }
+
+  /// helper function to find the smallest node
+
+  kthSmallestNode(node) {
+    while (!node.leftChild === null) node = node.leftChild;
+
+    return node;
+  }
 }
+
 let arr = [1, 2, 3, 4, 5, 6, 7];
 let arrB = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let arrC = [1];
+
 const BST = new Tree();
-//console.log(arrB);
 BST.buildTree(arrB);
 console.log(BST);
 console.log(BST.getInorderArray());
 console.log(BST.getLevelOrderArray());
 console.log(BST.insert(7000));
 console.log(BST.insert(6));
-console.log(BST.insert(10));
 console.log(BST.getInorderArray());
 console.log(BST.getLevelOrderArray());
-//console.log(BST.find(BST.root, 9));
-//BST.bstDeleteNode(BST.root, 67);
-//console.log(BST.insertNode(BST.root, 75));
+BST.remove(4);
+BST.remove(1);
+console.log(BST.getInorderArray());
+console.log(BST.getLevelOrderArray());
 console.log(BST);
 
 // fix delete node bugs
